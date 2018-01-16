@@ -1,0 +1,17 @@
+{
+  "name": "barnebys/mautic-api-helper",
+  "license": "MIT",
+  "type": "library",
+  "description": "",
+  "autoload": {
+    "psr-4": {
+      "BarnebysMautic\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=5.6",
+    "ext-curl": "*",
+    "psr/log": "~1.0",
+    "mautic/api-library": "2.10.0"
+  }
+}
