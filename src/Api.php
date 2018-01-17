@@ -88,8 +88,8 @@ class Api
 
         $api = self::getApiInstance();
 
-        $baseUrl = sprintf('contacts/%s/contact/%s/send', $templateId, $contactId);
-        $htmlUrl = sprintf('contacts/%s/contact/%s/send-content', $templateId, $contactId);
+        $baseUrl = sprintf('emails/%s/contact/%s/send', $templateId, $contactId);
+        $htmlUrl = sprintf('emails/%s/contact/%s/send-content', $templateId, $contactId);
 
         return $api->makeRequest($html === true ? $htmlUrl : $baseUrl, $tokens, 'POST');
     }
