@@ -98,4 +98,41 @@ class Api
         return $api->makeRequest($html === true ? $htmlUrl : $baseUrl, $tokens, 'POST');
     }
 
+    /**
+     * @param $email
+     * @param array $data
+     * @return mixed
+     * @throws ContactNotFoundException
+     * @throws Exception\AuthInstanceException
+     * @throws \Exception
+     */
+    public static function updateContact($email, $data = []) {
+
+        $contactId = self::getContactIdByMail($email);
+
+        $api = self::getApiInstance();
+
+        $baseUrl = sprintf('contacts/%s/edit', $contactId);
+
+        return $api->makeRequest($baseUrl, $data, 'PATCH');
+    }
+
+    /**
+     * @param $email
+     * @param array $data
+     * @return mixed
+     * @throws Exception\AuthInstanceException
+     */
+    public static function createContact($email, $data = []) {
+
+        $api = self::getApiInstance();
+
+        $data = array_merge([
+            'email' => $email,
+            'ipAddress' => $_SERVER['REMOTE_ADDR']
+        ], $data);
+
+        return $api->makeRequest('contacts/new', $data, 'POST');
+    }
+
 }

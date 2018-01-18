@@ -24,6 +24,23 @@ try {
 }
 ```
 
+### Handling Contacts
+
+##### Creating a contact
+
+```
+BarnebysMautic\Api::createContact($email, array $fields = [);
+```
+
+##### Updating a contact
+
+Updating a contact will do a PATCH and only update specified fields in the array.
+
+```
+BarnebysMautic\Api::updateContact($email, array $fields = [);
+```
+
+
 ### Sending emails
 
 When sending emails you can with ease use `sendToContact` and just set the email and a templateId.
