@@ -84,6 +84,10 @@ class Api
      */
     public static function sendToContact($email, $templateId, array $tokens = [], $html = false)
     {
+        if (!isset($tokens['tokens'])) {
+            $tokens = ['tokens' => $tokens];
+        }
+
         $contactId = self::getContactIdByMail($email);
 
         $api = self::getApiInstance();
