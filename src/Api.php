@@ -2,7 +2,10 @@
 
 namespace BarnebysMautic;
 
+use BarnebysMautic\Exception\ContactCreateException;
+use BarnebysMautic\Tags;
 use BarnebysMautic\Exception\ContactNotFoundException;
+use BarnebysMautic\Exception\SegmentNotFoundException;
 use Mautic\Api\Api as BaseApi;
 
 class Api
@@ -106,7 +109,7 @@ class Api
      * @throws Exception\AuthInstanceException
      * @throws \Exception
      */
-    public static function updateContact($email, $data = []) {
+    public static function updateContact($email, array $data) {
 
         $contactId = self::getContactIdByMail($email);
 
@@ -120,10 +123,11 @@ class Api
     /**
      * @param $email
      * @param array $data
-     * @return mixed
+     * @return array
      * @throws Exception\AuthInstanceException
+     * @throws \Exception
      */
-    public static function createContact($email, $data = []) {
+    public static function createContact($email, array $data = []) {
 
         $api = self::getApiInstance();
 
@@ -132,7 +136,14 @@ class Api
             'ipAddress' => $_SERVER['REMOTE_ADDR']
         ], $data);
 
-        return $api->makeRequest('contacts/new', $data, 'POST');
+
+        $data = $api->makeRequest('contacts/new', $data, 'POST');
+
+        if (isset($data['contact']) && isset($data['contact']['id'])) {
+           return $data['contact']['id'];
+        }
+
+        throw new ContactCreateException();
     }
 
 }
