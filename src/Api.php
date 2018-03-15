@@ -58,7 +58,7 @@ class Api
 
     /**
      * @param string $mail
-     * @return integer
+     * @return array
      *
      * @throws ContactNotFoundException
      * @throws Exception\AuthInstanceException
