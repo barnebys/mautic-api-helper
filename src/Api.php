@@ -57,6 +57,32 @@ class Api
     }
 
     /**
+     * @param string $mail
+     * @return integer
+     *
+     * @throws ContactNotFoundException
+     * @throws Exception\AuthInstanceException
+     * @throws \Exception
+     */
+    public static function getContactByMail($mail)
+    {
+        $api = self::getApiInstance();
+
+        $parameters = [
+            'search' => $mail,
+            'limit' => 1
+        ];
+
+        $data = $api->makeRequest('contacts', $parameters);
+        $contacts = $data['contacts'];
+        if(sizeof($contacts) > 0){
+            return current($contacts);
+        }
+
+        throw new ContactNotFoundException();
+    }
+
+    /**
      * @param string $email
      * @param integer $templateId
      * @param array $tokens
@@ -91,7 +117,11 @@ class Api
             $tokens = ['tokens' => $tokens];
         }
 
-        $contactId = self::getContactIdByMail($email);
+        try {
+            $contactId = self::getContactIdByMail($email);
+        } catch (ContactNotFoundException $e) {
+            $contactId = self::createContact($email);
+        }
 
         $api = self::getApiInstance();
 
@@ -111,7 +141,11 @@ class Api
      */
     public static function updateContact($email, array $data) {
 
-        $contactId = self::getContactIdByMail($email);
+        try {
+            $contactId = self::getContactIdByMail($email);
+        } catch (ContactNotFoundException $e) {
+            $contactId = self::createContact($email);
+        }
 
         $api = self::getApiInstance();
 
