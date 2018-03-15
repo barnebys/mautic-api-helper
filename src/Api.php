@@ -40,20 +40,8 @@ class Api
      */
     public static function getContactIdByMail($mail)
     {
-        $api = self::getApiInstance();
-
-        $parameters = [
-            'search' => $mail,
-            'limit' => 1
-        ];
-
-        $data = $api->makeRequest('contacts', $parameters);
-        $contacts = $data['contacts'];
-        if(sizeof($contacts) > 0){
-            return (int) current($contacts)['id'];
-        }
-
-        throw new ContactNotFoundException();
+        $contact = self::getContactByMail($mail);
+        return (int) $contact['id'];
     }
 
     /**
